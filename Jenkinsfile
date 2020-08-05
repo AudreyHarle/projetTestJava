@@ -1,16 +1,16 @@
-Jenkinsfile (Declarative Pipeline)
 pipeline {
-    
-     tools {
+    agent any
+
+    tools {
         // Install the Maven version configured as "M3" and add it to the path.
         maven "maven"
     }
- 
-    agent any
 
-    stages { steps {
+    stages {
+        stage('Build') {
+            steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/AudreyHarle/projetTestJava.git/'
+                git 'https://github.com/AudreyHarle/projetTestJava.git'
 
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
@@ -27,22 +27,6 @@ pipeline {
                     archiveArtifacts 'target/*.jar'
                 }
             }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
-    }
-    
-
-    stages {
-        stage('Build') {
-           
         }
     }
 }
