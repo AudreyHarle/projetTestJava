@@ -1,13 +1,32 @@
 Jenkinsfile (Declarative Pipeline)
 pipeline {
+    
+     tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "maven"
+    }
+ 
     agent any
 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
+    stages { steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/AudreyHarle/projetTestJava.git/'
+
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-        }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
         stage('Test') {
             steps {
                 echo 'Testing..'
@@ -17,6 +36,13 @@ pipeline {
             steps {
                 echo 'Deploying....'
             }
+        }
+    }
+    
+
+    stages {
+        stage('Build') {
+           
         }
     }
 }
