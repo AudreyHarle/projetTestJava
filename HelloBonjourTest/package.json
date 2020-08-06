@@ -4,8 +4,19 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha **/*.test.js"
+    "test": "mocha **/*.test.js",
+	"start": "node main.js"
+
   },
+   "repository": {
+    "type": "git",
+    "url": "https://github.com/AudreyHarle/projetTestJava.git"
+  },
+  "keywords": [
+    "node",
+    "docker",
+    "dockerfile"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
